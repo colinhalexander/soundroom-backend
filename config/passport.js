@@ -1,5 +1,5 @@
 const passport = require('passport')
-const encryptor = require('simple-encryptor')(process.env.ENCRYPTION_KEY)
+const encryptor = require('./encryptor')
 const SpotifyStrategy = require('passport-spotify').Strategy
 
 passport.use(
@@ -10,7 +10,14 @@ passport.use(
       callbackURL: '/auth/callback'
     },
     async (accessToken, refreshToken, profile, done) => {
-      // create user, save tokens
+
+      const encryptedAccessToken = encryptor.encrypt(accessToken),
+            encryptedRefreshToken = encryptor.encrypt(refreshToken)
+      
+      // write User.formatProfile(profile) in user model
+        // store only spotify user_id and tokens so user data will refresh with profile updates
+      
+      // insert formatted profile into database
     }
   )
 )

@@ -1,0 +1,1 @@
+module.exports = require('simple-encryptor')(process.env.ENCRYPTION_KEY)
