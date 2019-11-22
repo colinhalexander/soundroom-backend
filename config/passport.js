@@ -1,4 +1,5 @@
 const passport = require('passport')
+const encryptor = require('simple-encryptor')(process.env.ENCRYPTION_KEY)
 const SpotifyStrategy = require('passport-spotify').Strategy
 
 passport.use(
