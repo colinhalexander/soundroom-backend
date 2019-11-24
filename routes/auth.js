@@ -14,8 +14,11 @@ router.get('/',
   })
 )
 
-router.get('/callback', (req, res, next) => {
-  // passport.authenticate('spotify'), redirect to 
-})
+router.get('/callback', 
+  passport.authenticate('spotify', { failureRedirect: 'http://localhost:3001/' }),
+  (req, res) => {
+    res.redirect(`http://localhost:3001/users/${req.user.spotify_id}`)
+  }
+)
 
 module.exports = router;

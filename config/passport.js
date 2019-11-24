@@ -17,11 +17,13 @@ passport.use(
       console.log("profile", profile)
       console.log("accessToken", accessToken)
       console.log("done", done)
+
+      const user = {}
       // const formattedProfile = User.formatProfile(profile, _accessToken, _refreshToken)
       
       // const user = await User.findOrCreate(formattedProfile)
 
-      // return done(null, user)
+      return done(null, user)
     }
   )
 )
