@@ -11,13 +11,17 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
 
-      const encryptedAccessToken = encryptor.encrypt(accessToken),
-            encryptedRefreshToken = encryptor.encrypt(refreshToken)
+      const _accessToken = encryptor.encrypt(accessToken),
+            _refreshToken = encryptor.encrypt(refreshToken)
       
-      // write User.formatProfile(profile) in user model
-        // store only spotify user_id and tokens so user data will refresh with profile updates
+      console.log("profile", profile)
+      console.log("accessToken", accessToken)
+      console.log("done", done)
+      // const formattedProfile = User.formatProfile(profile, _accessToken, _refreshToken)
       
-      // insert formatted profile into database
+      // const user = await User.findOrCreate(formattedProfile)
+
+      // return done(null, user)
     }
   )
 )

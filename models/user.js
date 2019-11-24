@@ -7,8 +7,7 @@ class User {
   }
 
   static async create(userObject) {
-    const returnVars = ['id', 'spotify_id'],
-          user = await knex('users').insert(userObject, returnVars)
+    const user = await knex('users').insert(userObject, ['id', 'spotify_id'])
     
     return user[0]
   }
@@ -21,6 +20,15 @@ class User {
     }
 
     return user
+  }
+
+  static formatProfile(profile, accessToken, refreshToken) {
+    return {
+      spotify_id: profile.id,
+      access_token: accessToken,
+      token_expiration: null, // check out spotify response data and come back to this
+      refresh_token: refreshToken
+    }
   }
 }
 
