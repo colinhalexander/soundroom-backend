@@ -21,7 +21,6 @@ router.get('/callback',
     session: false
   }),
   (req, res) => {
-    console.log("/callback request:", req)
     res.redirect(`http://localhost:3001/users/${req.user.spotify_id}`)
   }
 )

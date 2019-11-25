@@ -11,18 +11,14 @@ passport.use(
       callbackURL: 'http://localhost:3000/auth/callback'
     },
     async (accessToken, refreshToken, profile, done) => {
-
       const _accessToken = encryptor.encrypt(accessToken),
             _refreshToken = encryptor.encrypt(refreshToken)
-      
-      // console.log("accessToken", accessToken)
-      // console.log("refreshToken", refreshToken)
-
-      const user = { spotify_id: 215435 }
-
-      // const formattedProfile = User.formatProfile(profile, _accessToken, _refreshToken)
-      
-      // const user = await User.findOrCreate(formattedProfile)
+            
+      const user = await User.findOrCreate({
+        spotify_id: profile.id,
+        access_token: _accessToken,
+        refresh_token: _refreshToken
+      })
 
       return done(null, user)
     }

@@ -3,9 +3,8 @@ exports.up = function(knex) {
     t.increments()
 
     t.string('spotify_id')
-    t.string('access_token')
-    t.string('token_expiration')
-    t.string('refresh_token')
+    t.text('access_token')
+    t.text('refresh_token')
 
     t.timestamps()
   })  
