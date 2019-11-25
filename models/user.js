@@ -36,14 +36,15 @@ class User {
   }
 
   static async getNewAccessToken(refreshToken) {
-    const response = await axios.post('https://accounts.spotify.com/api/token/', 
+    const response = await axios.post(
+      'https://accounts.spotify.com/api/token/', 
       querystring.stringify({
         grant_type: 'refresh_token',
         refresh_token: encryptor.decrypt(refreshToken)
       }), {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          'Authorization': 'Basic ' + new Buffer(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
+          'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
         }
       }).catch((response => {
         console.log("error:", response.response.data)
@@ -53,24 +54,29 @@ class User {
   }
 
   static async updateAccessToken(spotifyID, accessToken) {
-    await knex('users').where('spotify_id', spotifyID).update({
-      access_token: encryptor.encrypt(accessToken)
-    })
+    await knex('users')
+            .where('spotify_id', spotifyID)
+            .update({ access_token: encryptor.encrypt(accessToken) })
   }
 
   static async getProfile(spotifyID) {
     const tokens = await this.getTokens(spotifyID),
-          response = await axios.get(`https://api.spotify.com/v1/me`,  {
-            headers: {
-              Authorization: 'Bearer ' + encryptor.decrypt(tokens.access_token)
-            }
-          }).catch(async (response) => {
-            if (response.response.status === 401) {
-              const accessToken = await this.getNewAccessToken(tokens.refresh_token)
-              await this.updateAccessToken(spotifyID, accessToken)
-              return await this.getProfile(spotifyID)
-            }
-          })
+          response = await axios.get(
+            `https://api.spotify.com/v1/me`, 
+            {
+              headers: {
+                Authorization: 'Bearer ' + encryptor.decrypt(tokens.access_token)
+              }
+            })
+            .catch(async (response) => {
+              if (response.response.status === 401) {
+                const accessToken = await this.getNewAccessToken(tokens.refresh_token)
+                await this.updateAccessToken(spotifyID, accessToken)
+                return await this.getProfile(spotifyID)
+              } else {
+                console.log("error:", response.response.data)
+              }
+            })
     
     return response.data
   }
