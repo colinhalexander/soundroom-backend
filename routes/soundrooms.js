@@ -1,8 +1,9 @@
 const router = require('express').Router()
-const Soundroom = 
+const Soundroom = require('../models/soundroom')
 
 router.post('/', async (req, res, next) => {
-  await 
+  const soundroom = await Soundroom.create(req.body)
+  res.json(soundroom)
 })
 
 module.exports = router

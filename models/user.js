@@ -7,13 +7,13 @@ class User {
   static async findBySpotifyID(spotifyID) {
     const user = await knex('users')
                         .where('spotify_id', spotifyID)
-                        .select('id', 'spotify_id', 'access_token')
+                        .select('spotify_id', 'access_token')
     return user[0]
   }
 
   static async create(userObject) {
     const user = await knex('users')
-                        .insert(userObject, ['id', 'spotify_id', 'access_token'])
+                        .insert(userObject, ['spotify_id', 'access_token'])
     return user[0]
   }
 

@@ -2,9 +2,8 @@ const knex = require('../config/knex')
 
 class Soundroom {
   static async create(soundroomObj) {
-    console.log("Soundroom POST body:", req.body)
-    // const soundroom = await knex('soundrooms').insert(req.body)[0]
-    // console.log(soundroom)
+    const soundroom = await knex('soundrooms').insert(soundroomObj, '*')
+    return soundroom[0]
   }
 }
 
