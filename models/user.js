@@ -27,15 +27,31 @@ class User {
     return user
   }
 
-  static async getTokens(spotifyID) {
-    const tokenObjects = await knex('users')
-                          .where('spotify_id', spotifyID)
-                          .select('access_token', 'refresh_token')
+  static async getAccessToken(spotifyID) {
+    const tokensArray = await knex('users')
+                                .where('spotify_id', spotifyID)
+                                .select('access_token', 'refresh_token')
     
-    return tokenObjects[0]
+    let tokens = tokensArray[0]
+
+    if ( !(await this.checkAccessToken(tokens.access_token)) ) {
+      tokens = await this.refreshAccessToken(spotifyID, tokens.refresh_token)
+    }
+    
+    return tokens.access_token
   }
 
-  static async getNewAccessToken(refreshToken) {
+  static async checkAccessToken(access_token) {
+    const response = await axios.get('https://api.spotify.com/v1/me', {
+        headers: {
+          Authorization: 'Bearer ' + encryptor.decrypt(access_token)
+        }
+      }).catch(() => {})
+    
+    return response ? true : false
+  }
+
+  static async refreshAccessToken(spotifyID, refreshToken) {
     const response = await axios.post(
       'https://accounts.spotify.com/api/token/', 
       querystring.stringify({
@@ -47,36 +63,32 @@ class User {
           'Authorization': 'Basic ' + Buffer.from(`${process.env.SPOTIFY_CLIENT_ID}:${process.env.SPOTIFY_CLIENT_SECRET}`).toString('base64')
         }
       }).catch((response => {
-        console.log("error:", response.response.data)
+        console.log("refreshAccessToken error:", response.response.data)
       }))
-    
-    return response.data.access_token
+
+    const tokens = await this.updateAccessToken(spotifyID, response.data.access_token)
+    return tokens
   }
 
   static async updateAccessToken(spotifyID, accessToken) {
-    await knex('users')
+    const tokensArray = await knex('users')
             .where('spotify_id', spotifyID)
-            .update({ access_token: encryptor.encrypt(accessToken) })
+            .update(
+              { access_token: encryptor.encrypt(accessToken) },
+              ['access_token', 'refresh_token']
+            )
+    
+    return tokensArray[0]
   }
 
   static async getProfile(spotifyID) {
-    const tokens = await this.getTokens(spotifyID),
-          response = await axios.get(
-            `https://api.spotify.com/v1/me`, 
-            {
+    const accessToken = await this.getAccessToken(spotifyID),
+          response = await axios.get(`https://api.spotify.com/v1/me`, {
               headers: {
-                Authorization: 'Bearer ' + encryptor.decrypt(tokens.access_token)
+                Authorization: 'Bearer ' + encryptor.decrypt(accessToken)
               }
-            })
-            .catch(async (response) => {
-              if (response.response.status === 401) {
-                const accessToken = await this.getNewAccessToken(tokens.refresh_token)
-                await this.updateAccessToken(spotifyID, accessToken)
-                return await this.getProfile(spotifyID)
-              } else {
-                console.log("error:", response.response.data)
-              }
-            })
+            }
+          )
     
     return response.data
   }
