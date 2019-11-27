@@ -4,7 +4,7 @@ const axios = require('axios')
 const querystring = require('querystring')
 
 class User {
-  static async findBySpotifyID(spotifyID) {
+  static async find(spotifyID) {
     const user = await knex('users')
                         .where('spotify_id', spotifyID)
                         .select('spotify_id', 'access_token')
@@ -17,10 +17,19 @@ class User {
     return user[0]
   }
 
-  static async findOrCreate(userObject) {
-    let user = await this.findBySpotifyID(userObject.spotify_id) 
+  static async update(userObject) {
+    const user = await knex('users')
+                        .where('spotify_id', userObject.spotify_id)
+                        .update(userObject, ['spotify_id', 'access_token'])
+    return user[0]
+  }
 
-    if (!user) {
+  static async updateOrCreate(userObject) {
+    let user = await this.find(userObject.spotify_id) 
+
+    if (user) {
+      user = await this.update(userObject)
+    } else {
       user = await this.create(userObject)
     }
 

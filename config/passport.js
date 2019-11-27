@@ -14,7 +14,7 @@ passport.use(
       const _accessToken = encryptor.encrypt(accessToken),
             _refreshToken = encryptor.encrypt(refreshToken)
             
-      const user = await User.findOrCreate({
+      const user = await User.updateOrCreate({
         spotify_id: profile.id,
         access_token: _accessToken,
         refresh_token: _refreshToken

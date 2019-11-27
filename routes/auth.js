@@ -6,18 +6,21 @@ router.get('/',
     scope: [
       'streaming',
       'user-read-email',
-      'user-read-private'
-      // 'user-library-modify',
-      // 'user-library-read',
-      // 'user-modify-playback',
-      // 'playlist-modify-private'
-    ] 
+      'user-read-private',
+      'user-read-playback-state',
+      'user-modify-playback-state',
+      'user-read-currently-playing',
+      'user-read-recently-played',
+      'user-library-modify',
+      'user-library-read',
+      'playlist-modify-private',
+    ]
   })
 )
 
 router.get('/callback', 
   passport.authenticate('spotify', {
-    failureRedirect: 'http://localhost:3001/',
+    failureRedirect: 'http://localhost:3001/?login=failed',
     session: false
   }),
   (req, res) => {
