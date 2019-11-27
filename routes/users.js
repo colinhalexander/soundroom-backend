@@ -6,15 +6,15 @@ router.get('/:spotifyID', async (req, res, next) => {
 
   profile.id
     ? res.json(profile)
-    : res.json({ error: "try again" })
+    : res.json({ error: "Unable to retrieve user information" })
 })
 
-router.get('/:spotifyID/tokens', async (req, res, next) => {
-  const tokens = await User.getTokens(req.params.spotifyID)
-  
-  tokens
-    ? res.json(tokens)
-    : res.json({error: "message"})
+router.get('/:spotifyID/token', async (req, res, next) => {
+  const token = await User.getAccessToken(req.params.spotifyID)
+
+  token
+    ? res.json(token)
+    : res.json({error: "User authentication failed"})
 })
 
 module.exports = router;
