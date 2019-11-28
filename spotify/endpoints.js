@@ -69,6 +69,4 @@ const endpoints = {
   }
 }
 
-module.exports = {
-  endpoints
-}
+module.exports = endpoints

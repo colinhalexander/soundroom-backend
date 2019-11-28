@@ -27,11 +27,7 @@ class User {
   static async updateOrCreate(userObject) {
     let user = await this.find(userObject.spotify_id) 
 
-    if (user) {
-      user = await this.update(userObject)
-    } else {
-      user = await this.create(userObject)
-    }
+    user = user ? await this.update(userObject) : await this.create(userObject)
 
     return user
   }
@@ -55,7 +51,7 @@ class User {
         headers: {
           Authorization: 'Bearer ' + encryptor.decrypt(access_token)
         }
-      }).catch(() => {})
+      }).catch(() => null)
     
     return response ? true : false
   }
