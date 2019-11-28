@@ -13,6 +13,7 @@ router.get('/',
       'user-read-recently-played',
       'user-library-modify',
       'user-library-read',
+      'playlist-modify-public',
       'playlist-modify-private',
     ]
   })
