@@ -5,7 +5,8 @@ const User = require('../models/user')
 module.exports = async function makeSpotifyRequest(spotifyID, endpoint, requestBody) {
   const config = { 
     headers: {
-      Authorization: 'Bearer ' + encryptor.decrypt(await User.getAccessToken(spotifyID))
+      Authorization: 'Bearer ' +
+        encryptor.decrypt((await User.getAccessToken(spotifyID)))
     }
   }
   

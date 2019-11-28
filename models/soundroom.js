@@ -5,26 +5,27 @@ const { endpoints, makeSpotifyRequest } = require('../spotify')
 
 class Soundroom {
   static async create(soundroomObj) {
-    const soundroom = await knex('soundrooms').insert(soundroomObj, '*')
+    const playlist = await this.createPlaylist(soundroomObj.owner_id, soundroomObj.name)
+    const soundroom = playlist
+      ? (await knex('soundrooms').insert({
+          ...soundroomObj,
+          playlist_id: playlist.id
+        }, '*'))[0]
+      : null
 
-    if (soundroom[0]) {
-      const playlist = await this.createPlaylist(
-        soundroom[0].owner_id,
-        soundroom[0].name
-      )
-    }
-
-    return soundroom[0]
+    return soundroom
+      ? { soundroom, playlist }
+      : { error: "Unable to create SoundRoom" }
   }
 
   static async createPlaylist(spotifyID, name) {
-    const playlist = await makeSpotifyRequest(
+    const response = await makeSpotifyRequest(
       spotifyID,
       endpoints.createPlaylist(spotifyID),
       { name }
     ).catch(error => console.log(error))
 
-    return playlist 
+    return response.data 
   }
 }
 

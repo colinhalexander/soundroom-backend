@@ -3,6 +3,7 @@ exports.up = function(knex) {
     t.increments()
 
     t.string('name')
+    t.string('playlist_id')
     t.string('owner_id')
       t.foreign('owner_id').references('users.spotify_id')
 
