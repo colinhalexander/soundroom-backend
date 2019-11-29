@@ -9,7 +9,7 @@ module.exports = async function makeSpotifyRequest(spotifyID, endpoint, requestB
         encryptor.decrypt((await User.getAccessToken(spotifyID)))
     }
   }
-  
+
   switch(endpoint.method) {
     case 'GET':
       return await axios.get(endpoint.uri, config)

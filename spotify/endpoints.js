@@ -53,9 +53,9 @@ const endpoints = {
   },
   getTopSongs: {
     method: 'GET',
-    uri: 'https://api.spotify.com/v1/me/top/tracks'
+    uri: 'https://api.spotify.com/v1/me/top/tracks?limit=50'
   },
-  search: (query, types = ['album', 'artist', 'playlist', 'track']) => {
+  search: (query, types = ['album','artist','playlist','track']) => {
     const qString = querystring.stringify({
       q: query,
       type: types.join(''),
