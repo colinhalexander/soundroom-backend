@@ -6,6 +6,7 @@ const passport = require('passport')
 
 const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
+const spotifyRouter = require('./routes/spotify')
 const soundroomsRouter = require('./routes/soundrooms')
 
 const app = express()
@@ -17,6 +18,7 @@ app.use(passport.initialize())
 
 app.use('/auth', authRouter)
 app.use('/users', usersRouter)
+app.use('/spotify', spotifyRouter)
 app.use('/soundrooms', soundroomsRouter)
 
 app.listen(PORT, (req, res, next) => {
