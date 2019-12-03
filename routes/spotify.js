@@ -13,6 +13,18 @@ router.get('/:spotifyID/top/songs', async (req, res, next) => {
     : res.json({ error: "Unable to access top songs" })
 })
 
+router.post('/:spotifyID/search', async (req, res, next) => {
+  const response = await makeSpotifyRequest(
+    req.params.spotifyID,
+    endpoints.search(req.body.query),
+    null,
+  ).catch(error => console.log(error.response.data))
+
+  response
+    ? res.json(response.data)
+    : res.json({ error: "Unable to retrieve search results" })
+})
+
 router.post('/:spotifyID/:playlistID/songs', async (req, res, next) => {
   const response = await makeSpotifyRequest(
     req.params.spotifyID,

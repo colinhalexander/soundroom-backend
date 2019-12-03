@@ -2,7 +2,11 @@ const axios = require('axios')
 const encryptor = require('../config/encryptor')
 const User = require('../models/user')
 
-module.exports = async function makeSpotifyRequest(spotifyID, endpoint, requestBody) {
+module.exports = async function makeSpotifyRequest(
+  spotifyID,
+  endpoint,
+  requestBody
+) {
   const config = { 
     headers: {
       Authorization: 'Bearer ' +

@@ -5,29 +5,9 @@ const endpoints = {
     method: 'GET',
     uri: 'https://api.spotify.com/v1/me/player/currently-playing'
   },
-  getRecentlyPlayed: {
-    method: 'GET',
-    uri: 'https://api.spotify.com/v1/me/player/recently-played'
-  },
   getDevices: {
     method: 'GET',
     uri: 'https://api.spotify.com/v1/me/player/devices'
-  },
-  nextTrack: {
-    method: 'POST',
-    uri: 'https://api.spotify.com/v1/me/player/next'
-  },
-  previousTrack: {
-    method: 'POST',
-    uri: 'https://api.spotify.com/v1/me/player/previous'
-  },
-  pauseTrack: {
-    method: 'PUT',
-    uri: 'https://api.spotify.com/v1/me/player/pause'
-  },
-  playTrack: {
-    method: 'PUT',
-    uri: 'https://api.spotify.com/v1/me/player/play'
   },
   createPlaylist: (spotifyID) => {
     return {
@@ -47,18 +27,15 @@ const endpoints = {
       uri: `https://api.spotify.com/v1/playlists/${playlistID}/tracks`
     }
   },
-  getSavedSongs: {
-    method: 'GET',
-    uri: 'https://api.spotify.com/v1/me/tracks'
-  },
   getTopSongs: {
     method: 'GET',
     uri: 'https://api.spotify.com/v1/me/top/tracks?limit=50'
   },
-  search: (query, types = ['album','artist','playlist','track']) => {
+  search: (query, types = ['track']) => {
     const qString = querystring.stringify({
       q: query,
-      type: types.join(''),
+      limit: 50,
+      type: types.join(','),
       market: 'from_token'
     })
 
