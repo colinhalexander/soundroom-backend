@@ -21,6 +21,7 @@
     "passport": "^0.4.0",
     "passport-spotify": "^1.1.0",
     "pg": "^7.14.0",
-    "simple-encryptor": "^3.0.0"
+    "simple-encryptor": "^3.0.0",
+    "ws": "^7.2.0"
   }
 }
