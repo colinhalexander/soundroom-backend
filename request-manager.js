@@ -7,7 +7,7 @@ function config(server) {
   wss.on('connection', (ws, request, client) => {
     ws.on('message', (message) => {
       const parsedMessage = JSON.parse(message)
-      console.log("message:", parsedMessage)
+
       if (parsedMessage.type === "initial") {
         connections.push({
           id: parsedMessage.userID,
