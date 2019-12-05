@@ -3,7 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const passport = require('passport')
-const WebSocket = require('ws')
+const WebSocket = require('./request-manager')
 
 const authRouter = require('./routes/auth')
 const usersRouter = require('./routes/users')
@@ -26,8 +26,4 @@ const server = app.listen(PORT, (req, res, next) => {
   console.log(`Listening on port ${PORT}`)
 })
 
-const wss = new WebSocket.Server({ server })
-
-wss.on('connection', (ws, request, client) => {
-  ws.send('hey')
-})
+WebSocket.config(server)
