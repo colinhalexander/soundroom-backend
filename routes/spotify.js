@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const { endpoints, makeSpotifyRequest } = require('../spotify')
 
-router.get('/:spotifyID/top/songs', async (req, res, next) => {
+router.get('/:spotifyID/top/songs', async (req, res) => {
   const response = await makeSpotifyRequest(
     req.params.spotifyID,
     endpoints.getTopSongs,
@@ -13,7 +13,7 @@ router.get('/:spotifyID/top/songs', async (req, res, next) => {
     : res.json({ error: "Unable to access top songs" })
 })
 
-router.post('/:spotifyID/search', async (req, res, next) => {
+router.post('/:spotifyID/search', async (req, res) => {
   const response = await makeSpotifyRequest(
     req.params.spotifyID,
     endpoints.search(req.body.query),
@@ -25,7 +25,7 @@ router.post('/:spotifyID/search', async (req, res, next) => {
     : res.json({ error: "Unable to retrieve search results" })
 })
 
-router.post('/:spotifyID/:playlistID/songs', async (req, res, next) => {
+router.post('/:spotifyID/:playlistID/songs', async (req, res) => {
   const response = await makeSpotifyRequest(
     req.params.spotifyID,
     endpoints.addSongsToPlaylist(req.params.playlistID),
@@ -37,7 +37,7 @@ router.post('/:spotifyID/:playlistID/songs', async (req, res, next) => {
     : res.json({ error: "Unable to add song to playlist" })
 })
 
-router.delete('/:spotifyID/:playlistID/songs', async (req, res, next) => {
+router.delete('/:spotifyID/:playlistID/songs', async (req, res) => {
   const response = await makeSpotifyRequest(
     req.params.spotifyID,
     endpoints.removeSongsFromPlaylist(req.params.playlistID),

@@ -8,7 +8,7 @@ passport.use(
     {
       clientID: process.env.SPOTIFY_CLIENT_ID,
       clientSecret: process.env.SPOTIFY_CLIENT_SECRET,
-      callbackURL: 'https://soundroom-1.herokuapp.com/auth/callback'
+      callbackURL: 'http://localhost:3000/auth/callback'
     },
     async (accessToken, refreshToken, profile, done) => {
       const _accessToken = encryptor.encrypt(accessToken),
