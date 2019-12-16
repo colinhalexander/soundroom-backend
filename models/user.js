@@ -1,6 +1,6 @@
 const knex = require('../config/knex')
-const encryptor = require('../config/encryptor')
 const axios = require('axios')
+const encryptor = require('../config/encryptor')
 const querystring = require('querystring')
 
 class User {

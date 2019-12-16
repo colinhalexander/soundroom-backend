@@ -1,6 +1,4 @@
 const knex = require('../config/knex')
-// const axios = require('axios')
-// const User = require('./user')
 const { endpoints, makeSpotifyRequest } = require('../spotify')
 
 class Soundroom {
