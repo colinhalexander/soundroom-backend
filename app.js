@@ -1,4 +1,4 @@
-require('dotenv').config()
+// require('dotenv').config()
 const express = require('express')
 const cors = require('cors')
 const logger = require('morgan')
@@ -19,14 +19,14 @@ app.use(logger('common'))
 app.use(bodyParser.json())
 app.use(passport.initialize())
 
+app.get('/encryption', (req, res) => {
+  res.json({ key: process.env.ENCRYPTION_KEY })
+})
+
 app.use('/auth', authRouter)
 app.use('/users', usersRouter)
 app.use('/spotify', spotifyRouter)
 app.use('/soundrooms', soundroomsRouter)
-
-app.get('/encryption', (req, res) => {
-  res.json({ key: process.env.ENCRYPTION_KEY })
-})
 
 const server = app.listen(PORT, (req, res, next) => {
   console.log(`Listening on port ${PORT}`)
