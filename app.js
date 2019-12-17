@@ -14,7 +14,7 @@ const soundroomsRouter = require('./routes/soundrooms')
 const app = express()
 const PORT = process.env.PORT || '3000'
 
-app.use(cors())
+app.use(cors({ origin: 'https://soundroom-1.firebaseapp.com' }))
 app.use(logger('common'))
 app.use(bodyParser.json())
 app.use(passport.initialize())
@@ -23,6 +23,10 @@ app.use('/auth', authRouter)
 app.use('/users', usersRouter)
 app.use('/spotify', spotifyRouter)
 app.use('/soundrooms', soundroomsRouter)
+
+app.get('/encryption', (req, res) => {
+  res.json({ key: process.env.ENCRYPTION_KEY })
+})
 
 const server = app.listen(PORT, (req, res, next) => {
   console.log(`Listening on port ${PORT}`)
