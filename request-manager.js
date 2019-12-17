@@ -19,7 +19,12 @@ function config(server) {
         const soundroom = connections.find(connection => (
           connection.id === parsedMessage.targetID)
         )
-        soundroom.socket.send(JSON.stringify({ song: parsedMessage.song }))
+        if (soundroom) {
+          soundroom.socket.send(JSON.stringify({ song: parsedMessage.song }))
+        } else {
+          console.log("WebSocket error: unable to locate soundroom")
+          ws.send("Unable to connect to SoundRoom, please try again")
+        }
       }
     })
     
