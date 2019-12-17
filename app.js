@@ -14,7 +14,7 @@ const soundroomsRouter = require('./routes/soundrooms')
 const app = express()
 const PORT = process.env.PORT || '3000'
 
-app.use(cors({ origin: 'http://localhost:3000/' }))
+app.use(cors({ origin: 'http://localhost:3000' }))
 app.use(logger('common'))
 app.use(bodyParser.json())
 app.use(passport.initialize())
